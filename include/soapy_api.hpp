@@ -9,6 +9,9 @@
 #include <vector>
 #include <fstream>
 
+#define BLOCK_SAMPLES 1920 
+#define TIME_OFFSET_NS (4 * 1000 * 1000) 
+
 typedef struct settings_sdr{
     
     SoapySDRKwargs args;
@@ -38,4 +41,5 @@ void active_stream(set_sdr *device);
 
 void shutdown(set_sdr *device);
 
+void trx_samples(set_sdr *device, int16_t *samples, int size_sample);
 
