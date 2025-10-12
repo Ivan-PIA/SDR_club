@@ -27,7 +27,12 @@ int16_t *read_pcm(const char *filename, size_t *sample_count)
 
     *sample_count = file_size / sizeof(int16_t);
 
-    fread(samples, sizeof(int16_t), *sample_count, file);
+    size_t sf = fread(samples, sizeof(int16_t), *sample_count, file);
+
+    if (sf == 0){
+        printf("file %s empty!", filename);
+    }
+
     fclose(file);
 
     return samples;
@@ -41,8 +46,8 @@ int main(void)
     size_t channel_count = sizeof(channels) / sizeof(channels[0]);
 
     set_args(&dev1);
-    set_sample_rate(&dev1, SOAPY_SDR_RX, 1e6);
-    set_sample_rate(&dev1, SOAPY_SDR_TX, 1e6);
+    set_sample_rate(&dev1, SOAPY_SDR_RX, 2e6);
+    set_sample_rate(&dev1, SOAPY_SDR_TX, 2e6);
     set_frequency(&dev1, SOAPY_SDR_RX, 800e6);
     set_frequency(&dev1, SOAPY_SDR_TX, 800e6);
     setup_stream(&dev1, SOAPY_SDR_RX, channels, channel_count);
@@ -57,6 +62,7 @@ int main(void)
     size_t count = 0;
     int16_t *pcm = read_pcm("../resurse/in/ANNA_ASTI.pcm", &count);
     printf("count = %ld\n", count );
+
 
     trx_samples(&dev1, pcm, count);
     shutdown(&dev1);
