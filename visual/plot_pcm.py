@@ -80,20 +80,23 @@ def read_bin_file_float(name):
 N_fft = 128
 CP = 32
 
-# Инициализируем список для хранения данных
 # rx = read_bin_file("build/txdata2.pcm")
-rx = read_bin_file("file/out/rxdata_audio.pcm")
+# rx = read_bin_file("/home/ivan/Desktop/SDR/SDR_club/resurse/out/txdata_qpsk.pcm")
+rx = read_bin_file("/home/ivan/Desktop/SDR/SDR_club/resurse/out/rxdata_bpsk.pcm")
 # rx = read_bin_file("build/Smeshariki.pcm")
 # print(rx[39500:40000])
+
 plt.figure()
+# rx = rx[8000:8500]
 # plt.stem(abs(rx))
 plt.plot(np.real(rx)) 
 plt.plot(np.imag(rx))
+
 # count_ofdm= int(len(rx)//(N_fft+CP))
 # plt.figure()
 # resource_grid(rx, count_ofdm, 1, N_fft, CP, title=" SOAPY " )
 # print(len(rx))
-
+# plt.scatter(np.real(rx), np.real(rx))
 # # data = corr_pss_time(rx,N_fft)
 # rx = int(len(rx)//(N_fft+CP))
 
@@ -108,7 +111,8 @@ plt.plot(np.imag(rx))
 # plt.plot(abs(rx))  # Используем scatter для диаграммы созвездия
 # # plt.plot(count,(real), color='blue')  # Используем scatter для диаграммы созвездия
 
-# plt.figure(3)
-# plt.scatter(rx.real,rx.imag, color='blue') 
+plt.figure(3)
+
+plt.scatter(rx.real,rx.imag, color='blue') 
 plt.show()
 

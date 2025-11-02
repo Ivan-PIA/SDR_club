@@ -34,4 +34,4 @@ def mp3_to_pcm(mp3_file,pcm_file):
 # mp3_to_pcm("resurse/in/ANNA_ASTI.mp3", "resurse/in/ANNA_ASTI.pcm")
 # mp3_to_pcm("resurse/in/Smeshariki.mp3", "resurse/out/Smeshariki.pcm")
 # pcm_to_mp3("resurse/out/rxdata_etalon.pcm", "resurse/out/smeshrestored.mp3")
-pcm_to_mp3("resurse/out/rxdata_audio_2.pcm", "resurse/out/smeshrestored.mp3")
+pcm_to_mp3("resurse/out/rxdata_audio_2.pcm", "resurse/out/anna.mp3")
