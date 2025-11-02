@@ -11,8 +11,12 @@ if (SoapySDR_FOUND)
 endif()
 
 set(SOURCES
-    audio_trx.cpp
-    src/soapy_api.cpp 
+    # audio_trx.cpp
+    src/device/soapy_api.cpp 
+    src/phy/filter.cpp
+    src/phy/mapper.cpp
+    test/test_bpsk_trx.cpp
+    # test/test_upsample.cpp
 )
 
 add_executable(soapy_pluto_sdr_timestamp ${SOURCES})
