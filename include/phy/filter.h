@@ -14,6 +14,8 @@ std::vector<complex_d> upsampling(const std::vector<complex_d>& symbols, int cou
 
 std::vector<complex_d> rect_pulse(int count_smpl_symbol);
 
+std::vector<complex_d> raised_cosine(int N);
+
 std::vector <complex_d> convolve(const std::vector <complex_d> &symb, const std::vector <complex_d> &pulse);
 
 std::vector<complex_d> convolve2(const std::vector<complex_d>& x, const std::vector<complex_d>& h);
