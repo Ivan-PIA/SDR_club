@@ -22,6 +22,17 @@ std::vector<complex_d> rect_pulse(int count_smpl_symbol)
     return pulse;
 }
 
+std::vector<complex_d> raised_cosine(int N) 
+{
+    std::vector<complex_d> window(N);
+    for (int n = 0; n < N; ++n) {
+        double v = 0.5 * (1 + cos(M_PI * (n - (N-1)/2.0) / ((N-1)/2.0)));
+        window[n] = complex_d(v, 0);
+    }
+    
+    return window;
+}
+
 std::vector <complex_d> convolve(const std::vector <complex_d> &symb, const std::vector <complex_d> &pulse)
 {
     int size_symb = symb.size();
