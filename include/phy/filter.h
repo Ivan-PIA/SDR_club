@@ -19,3 +19,6 @@ std::vector<complex_d> raised_cosine(int N);
 std::vector <complex_d> convolve(const std::vector <complex_d> &symb, const std::vector <complex_d> &pulse);
 
 std::vector<complex_d> convolve2(const std::vector<complex_d>& x, const std::vector<complex_d>& h);
+
+std::vector<complex_d> convolve3(const std::vector<complex_d>& x,
+                                const std::vector<complex_d>& h);
