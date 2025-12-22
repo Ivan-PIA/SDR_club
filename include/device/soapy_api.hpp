@@ -25,7 +25,9 @@ typedef struct settings_sdr{
 
 }set_sdr;
 
-int set_args(set_sdr *device);
+int set_args(set_sdr *device, const char *uri);
+
+int set_args_srsran(set_sdr *device, const char *uri);
 
 void set_sample_rate(set_sdr *device, int direction, double rate);
 
@@ -43,7 +45,26 @@ void active_stream(set_sdr *device);
 
 void shutdown(set_sdr *device);
 
+int setup_stream_RX(set_sdr *device, int direction, size_t channels[], size_t channel_count);
+
+int setup_stream_TX(set_sdr *device, int direction, size_t channels[], size_t channel_count);
+
+void get_MTU_RX(set_sdr *device);
+
+void get_MTU_TX(set_sdr *device);
+
+void shutdown_RX(set_sdr *device);
+
+void shutdown_TX(set_sdr *device);
+
+void active_stream_TX(set_sdr *device);
+
+void active_stream_RX(set_sdr *device);
+// передача
 void trx_samples(set_sdr *device, int16_t *samples, int size_sample);
 
 void trx_samples_buff_repeat(set_sdr *device, const std::vector<complex_d> &samples);
+
+void rx_loop(set_sdr *device);
+void tx_loop(set_sdr *device, const std::vector<complex_d> &samples);
 
