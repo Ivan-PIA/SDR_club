@@ -1,6 +1,6 @@
 #include "../../include/phy/mapper.h"
 
-std::vector<complex_d> bpsk(const std::vector <int8_t> &bits)
+std::vector<complex_d> bpsk(const std::vector <int> &bits)
 {
     std::vector<complex_d> bpsk_symb(bits.size(), complex_d(0,0));
 
@@ -11,7 +11,7 @@ std::vector<complex_d> bpsk(const std::vector <int8_t> &bits)
     return bpsk_symb;
 }
 
-std::vector<complex_d> qpsk(const std::vector<int8_t> &bits)
+std::vector<complex_d> qpsk(const std::vector<int> &bits)
 {
     size_t n_sym = bits.size() / 2;
     std::vector<complex_d> qpsk_symb(n_sym);
