@@ -66,3 +66,20 @@ std::vector<complex_d> convolve2(const std::vector<complex_d>& x,
 
     return y;
 }
+
+std::vector<complex_d> convolve3(const std::vector<complex_d>& x,
+                                 const std::vector<complex_d>& h)
+{
+    size_t nsize = x.size();
+    size_t m = h.size();
+    std::vector<complex_d> y(nsize, complex_d(0.0, 0.0)); // выход длиннее
+
+    for (size_t n = 0; n < y.size(); ++n) {
+        for (size_t k = 0; k < m; ++k) {
+            if (n >= k && (n - k) < nsize)
+                y[n] += x[n - k] * h[k];
+        }
+    }
+
+    return y;
+}
