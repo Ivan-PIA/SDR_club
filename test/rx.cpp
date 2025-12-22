@@ -8,8 +8,6 @@
 #include <fstream>
 #include <iostream>
 
-#include "../include/phy/filter.h"
-#include "../include/phy/mapper.h"
 #include "../include/device/soapy_api.hpp"
 
 #define BLOCK_SAMPLES 1920 
@@ -28,13 +26,6 @@ void print_vec(const std::vector<T>& vec, int in_row) {
     std::cout << std::endl;
 }
 
-std::vector<int> gen_rand(int size){
-    std::vector<int> mass;
-    for (int i = 0; i < size; i++){
-        mass.push_back(rand()%2);
-    }
-    return mass;
-}
 
 void set_parametrs(set_sdr *dev, const char *usb){
     size_t channels[] = {0};
@@ -51,6 +42,8 @@ void set_parametrs(set_sdr *dev, const char *usb){
     set_gain(dev, SOAPY_SDR_TX, channels, -90);
     get_MTU(dev);
     active_stream(dev);
+
+
 }
 
 void set_parametrs_RX(set_sdr *dev, const char *usb){
@@ -61,7 +54,7 @@ void set_parametrs_RX(set_sdr *dev, const char *usb){
     set_sample_rate(dev, SOAPY_SDR_RX, 1e6);
     set_frequency(dev, SOAPY_SDR_RX, 870e6);
     setup_stream_RX(dev, SOAPY_SDR_RX, channels, channel_count);
-    set_gain(dev, SOAPY_SDR_RX, channels, 0);
+    set_gain(dev, SOAPY_SDR_RX, channels, 25);
     get_MTU_RX(dev);
     active_stream_RX(dev);
 
@@ -83,39 +76,12 @@ void set_parametrs_TX(set_sdr *dev, const char *usb){
 
 int main(int argc, char* argv[])
 {
-
     set_sdr dev_rx;
     memset(&dev_rx, 0, sizeof(dev_rx)); 
 
-    set_sdr dev_tx;
-    memset(&dev_tx, 0, sizeof(dev_tx)); 
+    printf("RX enable !!!!\n");
+    set_parametrs_RX(&dev_rx, "ip:192.168.3.1"); 
 
-    set_parametrs(&dev_rx, "ip:192.168.3.1"); 
-
-    // set_sdr dev1;
-    // memset(&dev1, 0, sizeof(dev1)); // обнуляем
-    // set_parametrs(&dev1, "usb:3.5.5"); 
-
-    int smpl_in_symbl = 10;
-    // std::vector<int8_t> bits = {1,1,1,1,1,1,1,1,0,0,1,0,1,0,1,1,0,1,0,1,0,1,1,1,1,0};
-
-    std::vector<int> bits = gen_rand(1920);
-
-    std::vector<complex_d> bpsk_sym = qpsk(bits);
-
-    std::vector<complex_d> upbits = upsampling(bpsk_sym, smpl_in_symbl);
-
-    // print_vec(bpsk_sym);
-
-    std::vector<complex_d> pulse_vec = rect_pulse(smpl_in_symbl);
-    // std::vector<complex_d> pulse_vec = raised_cosine(smpl_in_symbl);
-    std::vector<complex_d> conv = convolve3(upbits, pulse_vec);
-    // print_vec(bits, bits.size());
-    // print_vec(conv, 10);
-
-
-    trx_samples_buff_repeat(&dev_rx, conv);
-
-    
-    
+    rx_loop(&dev_rx);
+    shutdown_RX(&dev_rx);
 }

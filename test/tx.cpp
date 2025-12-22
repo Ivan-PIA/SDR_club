@@ -14,33 +14,12 @@
 
 #define BLOCK_SAMPLES 1920 
 
-template <typename T>
-void print_vec(const std::vector<T>& vec, int in_row) {
-
-    for (int i = 0; i < (int)vec.size(); i++){
-        
-        if(i%in_row == 0 && i!=0){
-            std::cout << std::endl;
-        }
-        std::cout << vec[i] << ", ";
-
-    }
-    std::cout << std::endl;
-}
-
-std::vector<int> gen_rand(int size){
-    std::vector<int> mass;
-    for (int i = 0; i < size; i++){
-        mass.push_back(rand()%2);
-    }
-    return mass;
-}
-
 void set_parametrs(set_sdr *dev, const char *usb){
     size_t channels[] = {0};
     size_t channel_count = sizeof(channels) / sizeof(channels[0]);
 
     set_args(dev, usb);
+    printf("SET ARG\n");
     set_sample_rate(dev, SOAPY_SDR_RX, 1e6);
     set_sample_rate(dev, SOAPY_SDR_TX, 1e6);
     set_frequency(dev, SOAPY_SDR_RX, 800e6);
@@ -51,6 +30,8 @@ void set_parametrs(set_sdr *dev, const char *usb){
     set_gain(dev, SOAPY_SDR_TX, channels, -90);
     get_MTU(dev);
     active_stream(dev);
+
+
 }
 
 void set_parametrs_RX(set_sdr *dev, const char *usb){
@@ -58,10 +39,11 @@ void set_parametrs_RX(set_sdr *dev, const char *usb){
     size_t channel_count = sizeof(channels) / sizeof(channels[0]);
 
     set_args(dev, usb);
+    printf("SET ARG\n");
     set_sample_rate(dev, SOAPY_SDR_RX, 1e6);
     set_frequency(dev, SOAPY_SDR_RX, 870e6);
     setup_stream_RX(dev, SOAPY_SDR_RX, channels, channel_count);
-    set_gain(dev, SOAPY_SDR_RX, channels, 0);
+    set_gain(dev, SOAPY_SDR_RX, channels, 25);
     get_MTU_RX(dev);
     active_stream_RX(dev);
 
@@ -72,6 +54,7 @@ void set_parametrs_TX(set_sdr *dev, const char *usb){
     size_t channel_count = sizeof(channels) / sizeof(channels[0]);
 
     set_args(dev, usb);
+    printf("SET ARG\n");
     set_sample_rate(dev, SOAPY_SDR_TX, 1e6);
     set_frequency(dev, SOAPY_SDR_TX, 870e6);
     setup_stream_TX(dev, SOAPY_SDR_TX, channels, channel_count);
@@ -81,20 +64,22 @@ void set_parametrs_TX(set_sdr *dev, const char *usb){
     
 }
 
+std::vector<int> gen_rand(int size){
+    std::vector<int> mass;
+    for (int i = 0; i < size; i++){
+        mass.push_back(rand()%2);
+    }
+    return mass;
+}
+
 int main(int argc, char* argv[])
 {
-
-    set_sdr dev_rx;
-    memset(&dev_rx, 0, sizeof(dev_rx)); 
 
     set_sdr dev_tx;
     memset(&dev_tx, 0, sizeof(dev_tx)); 
 
-    set_parametrs(&dev_rx, "ip:192.168.3.1"); 
-
-    // set_sdr dev1;
-    // memset(&dev1, 0, sizeof(dev1)); // обнуляем
-    // set_parametrs(&dev1, "usb:3.5.5"); 
+    printf("TX enable !!!!\n");
+    set_parametrs_TX(&dev_tx, "ip:192.168.2.1"); 
 
     int smpl_in_symbl = 10;
     // std::vector<int8_t> bits = {1,1,1,1,1,1,1,1,0,0,1,0,1,0,1,1,0,1,0,1,0,1,1,1,1,0};
@@ -113,9 +98,10 @@ int main(int argc, char* argv[])
     // print_vec(bits, bits.size());
     // print_vec(conv, 10);
 
+    tx_loop(&dev_tx, conv);
+    shutdown_TX(&dev_tx);
 
-    trx_samples_buff_repeat(&dev_rx, conv);
 
-    
-    
+    // trx_samples_buff_2sdr(&dev_rx, &dev_tx, conv, 1);
+    // // trx_samples_buff_repeat(&dev1, conv); 
 }

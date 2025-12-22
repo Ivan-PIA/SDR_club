@@ -22,7 +22,7 @@ void print_vec(const std::vector<T>& vec) {
 int main(void)
 {
     int smpl_in_symbl = 10;
-    std::vector<int8_t> bits = {0,0,1,0,1,0,1,1,0,1,0,1,0,1,1,1,1,0};
+    std::vector<int> bits = {0,0,1,0,1,0,1,1,0,1,0,1,0,1,1,1,1,0};
     std::vector<complex_d> bpsk_sym = bpsk(bits);
 
     std::vector<complex_d> upbits = upsampling(bpsk_sym, smpl_in_symbl);
