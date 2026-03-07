@@ -5,7 +5,7 @@ int set_args(set_sdr *device, const char *uri){
     device->args = {};
     SoapySDRKwargs_set(&device->args, "driver", "plutosdr");
     if (1) {
-        SoapySDRKwargs_set(&device->args, "uri", "usb:");
+        SoapySDRKwargs_set(&device->args, "uri", uri);
     } else {
         SoapySDRKwargs_set(&device->args, "uri", uri);
     }
@@ -368,13 +368,13 @@ void rx_loop(set_sdr *device)
     int16_t *rx_buff = (int16_t *)malloc(2 * mtu * sizeof(int16_t));
     if (!rx_buff) return;
 
-    FILE *file = fopen("../resurse/out/rxdata_bpsk.pcm", "wb");
+    FILE *file = fopen("../resurse/out/rxdata_bpsk_2sdr.pcm", "wb");
     if (!file) {
         free(rx_buff);
         return;
     }
 
-    for (size_t blk = 0; blk < 10; blk++)
+    for (size_t blk = 0; blk < 1500; blk++)
     {
         void *buffs[] = {rx_buff};
         int flags = 0;
@@ -408,9 +408,9 @@ void tx_loop(set_sdr *device, const std::vector<complex_d> &samples)
     int16_t tx_buffer[2 * mtu];
     add_data_to_buffer(tx_buffer, samples);
     int16_t *rx_buff = (int16_t *)malloc(2 * mtu * sizeof(int16_t));
-    FILE *file = fopen("../resurse/out/txdata_qpsk.pcm", "wb");
+    FILE *file = fopen("../resurse/out/txdata_qpsk_2sdr.pcm", "wb");
 
-    for (size_t blk = 0; blk < 10; blk++)
+    for (size_t blk = 0; blk < 1500; blk++)
     {
 
         // void *buffs_rx[] = {rx_buff};
